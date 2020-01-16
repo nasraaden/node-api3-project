@@ -56,7 +56,7 @@ router.delete('/:id', validatePostId, (req, res) => {
 
 router.put('/:id', validatePostId, (req, res) => {
   const postData = req.body;
-  Posts.insert(postData)
+  Posts.update(postData)
   .then(post => {
       res.status(200).json(post)
   })
@@ -73,7 +73,7 @@ function validatePostId(req, res, next) {
   Posts.getById(id)
   .then(post => {
     if (post) {
-      req.post = post
+      req.post = post;
       next();
     } else {
       res.status(400).json({ message: "Invalid post id."})

@@ -6,12 +6,12 @@ const Users = require("./userDb.js");
 
 router.post('/', validateUser, (req, res) => {
   Users.insert(req.body)
-    .then(user => {
-      res.status(201).json(user)
+    .then(users => {
+      res.status(201).json(users)
     })
     .catch(err => {
       console.log(err)
-      res.status(500).json({message: "There was an error while saving the user to the database"})
+      res.status(500).json({message: "There was an error while saving the user to the database."})
     })
 });
 
@@ -52,7 +52,7 @@ router.get('/:id', validateUserId, (req, res) => {
     })
 });
 
-router.get('/:id/posts', [validateUserId, validatePost], (req, res) => {
+router.get('/:id/posts', validateUserId, validatePost, (req, res) => {
   Users.getUserPosts(req.params.id)
   .then(post => {
     if(response.length != 0){
@@ -68,6 +68,7 @@ router.get('/:id/posts', [validateUserId, validatePost], (req, res) => {
 });
 
 router.delete('/:id', validateUserId, (req, res) => {
+  const id = req.params.id;
   Users.getById(id)
   .then(user => {
     if(user.length != 0) {
@@ -124,7 +125,7 @@ function validateUser(req, res, next) {
   const body = req.body;
   if (!body) {
     res.status(400).json({ message: "Missing user data"})
-  } else if (!body.name){
+  }  else if (!body.name){
     res.status(400).json({ message: "Missing required name field"})
   } else {
     next();

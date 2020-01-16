@@ -8,7 +8,7 @@ const server = express();
 //custom middleware
 function logger(req, res, next) {
   const { method, originalUrl } = req;
-  console.log(`${method} to ${originalUrl} at ${Date()}`)
+  console.log(`${method} to ${originalUrl} on ${Date()}`)
   next();
 }
 
